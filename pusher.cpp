@@ -16,6 +16,7 @@ int main(int argc,char** argv){
 		if(tmp[i]=='\"') break;
 		ver+=tmp[i];
 	}
+	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
 	system("copy ..\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
 	system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
