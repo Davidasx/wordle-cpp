@@ -29,7 +29,12 @@ int bad[26];
 string det;
 map<string,int> vals;
 set<string> inter;
-vector<string> internal_vals={"LAST_UPDATE"};
+vector<string> internal_vals={"LAST_UPDATE","ACCOUNT"};
+map<string,string> desc,strv;
+void prep(){
+	desc["TURNS"]="Number of turns you have of guessing the word.\n            Suggested value is 20.";
+	desc["UPDATE_INTERVAL"]="How often the program asks you to update it (in days).\n            Suggested value is 30.";
+}
 void printstate(int rounds,int wid,int rounds_disp){
 	system("cls");
 	scta(back);
@@ -187,12 +192,19 @@ void rules(){
 	system("pause");
 }
 void readconf(){
+	vals.clear();
 	ifstream conf(config.data());
 	string field,val_string;
 	int val_int;
 	while(conf>>field){
-		conf>>val_int;
-		vals[field.substr(1,field.size()-2)]=val_int;
+		if(field[0]=='['){
+			conf>>val_int;
+			vals[field.substr(1,field.size()-2)]=val_int;
+		}
+		else{
+			conf>>val_string;
+			strv[field.substr(1,field.size()-2)]=val_string;
+		}
 	}
 	conf.close();
 }
@@ -202,6 +214,10 @@ void writeconf(){
 		conf<<"["<<conff.first<<"]"<<endl;
 		conf<<conff.second<<endl;
 	}
+	for(pair<string,string> conff:strv){
+		conf<<"<"<<conff.first<<">"<<endl;
+		conf<<conff.second<<endl;
+	}
 	conf.close();
 }
 void settings(){
@@ -209,6 +225,9 @@ void settings(){
 		system("cls");
 		cout<<"Configuration"<<endl;
 		for(pair<string,int> conff:vals) if(!inter.count(conff.first)){
+			cout<<conff.first<<"="<<conff.second<<endl;
+		}
+		for(pair<string,string> conff:strv) if(!inter.count(conff.first)){
 			cout<<conff.first<<"="<<conff.second<<endl;
 		}
 		cout<<"0)   exit settings"<<endl;
@@ -224,15 +243,33 @@ void settings(){
 			cout<<"Name:"<<flush;
 			string S;
 			cin>>S;
-			if(!vals.count(S)||inter.count(S)){
+			if((!vals.count(S)&&!strv.count(S))||inter.count(S)){
 				cout<<"Value doesn't exist!"<<endl;
 				system("pause");
 				continue;
 			}
-			cout<<"Value:"<<flush;
-			int T;
-			cin>>T;
-			vals[S]=T;
+			if(vals.count(S)){
+				cout<<"Description:"<<desc[S]<<endl;
+				cout<<"Old value:"<<vals[S]<<endl;
+				cout<<"New value(leave blank to keep old value):"<<flush;
+				string tmp;
+				getline(cin,tmp);
+				getline(cin,tmp);
+				if(tmp=="") continue;
+				int T=0;
+				for(int i=0;i<(int)(tmp.size());i++) T=(T*10+tmp[i]-'0');
+				vals[S]=T;
+			}
+			if(strv.count(S)){
+				cout<<"Description:"<<desc[S]<<endl;
+				cout<<"Old value:"<<strv[S]<<endl;
+				cout<<"New value(leave blank to keep old value):"<<flush;
+				string tmp;
+				getline(cin,tmp);
+				getline(cin,tmp);
+				if(tmp=="") continue;
+				strv[S]=tmp;
+			}
 		}
 	}
 }
@@ -271,30 +308,30 @@ void update(){
 		if(t=='1'){
 			cout<<"Downlaoding..."<<endl;
 			if(havecpp){
-				ret=download_file("releases/"+lver+"/wordle.cpp","wordle_new.cpp");
+				ret=download_file("releases/"+lver+"/wordle.cpp","wordle_new_update.cpp");
 				if(ret){
 					cout<<"Failed to download."<<endl;
 					system("pause");
 					return;
 				}
 			}
-			ret=download_file("releases/"+lver+"/wordle.exe","wordle_new.exe");
+			ret=download_file("releases/"+lver+"/wordle.exe","wordle_new_update.exe");
 			if(ret){
 				cout<<"Failed to download."<<endl;
 				if(havecpp)
-					system("del wordle_new.cpp");
+					system("del wordle_new_update.cpp");
 				system("pause");
 				return;
 			}
 			ofstream fout("wdupdater.bat");
 			fout<<"@echo off"<<endl;
 			fout<<"pause"<<endl;
-			fout<<"copy wordle_new.exe "<<progname<<endl;
+			fout<<"copy wordle_new_update.exe "<<progname<<endl;
 			if(havecpp)
-				fout<<"copy wordle_new.cpp "<<cppname<<endl;
-			fout<<"del wordle_new.exe"<<endl;
+				fout<<"copy wordle_new_update.cpp "<<cppname<<endl;
+			fout<<"del wordle_new_update.exe"<<endl;
 			if(havecpp)
-				fout<<"del wordle_new.cpp"<<endl;
+				fout<<"del wordle_new_update.cpp"<<endl;
 			fout<<"cls"<<endl;
 			fout<<progname<<endl;
 			fout.close();
@@ -344,6 +381,8 @@ int main(int argc,char** argv){
 		confgen<<time(NULL)<<endl;
 		confgen<<"[UPDATE_INTERVAL]"<<endl;
 		confgen<<30<<endl;
+		confgen<<"<ACCOUNT>"<<endl;
+		confgen<<"Visitor"<<endl;
 		confgen.close();
 	}
 	else tmpconf.close();
@@ -351,6 +390,7 @@ int main(int argc,char** argv){
 	if(!vals["TURNS"]) vals["TURNS"]=20;
 	if(!vals["LAST_UPDATE"]) vals["LAST_UPDATE"]=time(NULL);
 	if(!vals["UPDATE_INTERVAL"]) vals["UPDATE_INTERVAL"]=30;
+	if(!strv["ACCOUNT"].size()) strv["ACCOUNT"]="Visitor";
 	writeconf();
 	if(time(NULL)>vals["LAST_UPDATE"]+vals["UPDATE_INTERVAL"]*24*3600){
 		scta(red);
@@ -363,24 +403,26 @@ int main(int argc,char** argv){
 	}
 	scta(back);
 	srand(unsigned(time(NULL)));
+	prep();
 	while(1){
 		system("cls");
+		
 		cout<<"WORDLE (C++) Version "<<ver<<" ("<<date<<") by David X"<<endl;
-		cout<<"0)   exit"<<endl;
 		cout<<"1)   guess word"<<endl;
 		cout<<"2)   rules"<<endl;
-		cout<<"3)   about"<<endl;
-		cout<<"4)   settings"<<endl;
-		cout<<"5)   update"<<endl;
+		cout<<"3)   settings"<<endl;
+		cout<<"4)   update"<<endl;
+		cout<<"5)   about"<<endl;
+		cout<<"0)   exit"<<endl;
 		cout<<"Please choose one (index):"<<flush;
 		int t=getch();
 		cout<<(char)(t)<<endl;
 		if(t=='0') return 0;
 		if(t=='1') wordle();
 		if(t=='2') rules();
-		if(t=='3') about();
-		if(t=='4') settings();
-		if(t=='5') update();
+		if(t=='3') settings();
+		if(t=='4') update();
+		if(t=='5') about();
 	}
 	return 0;
 }
