@@ -24,6 +24,7 @@ int main(int argc,char** argv){
 	system("copy ..\\wordle.exe wordle.exe");
 	system("copy ..\\wordle.exe releases\\"+ver+"\\wordle.exe");
 	system("commiter");
+	system("pause");
 	return 0;
 }
 

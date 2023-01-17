@@ -30,6 +30,35 @@ string det;
 map<string,int> vals;
 set<string> inter;
 vector<string> internal_vals={"LAST_UPDATE"};
+void printstate(int rounds,int wid,int rounds_disp){
+	system("cls");
+	scta(back);
+	printf("Try #%4d\n",rounds_disp);
+	for(int i=0;i<3;i++){
+		for(int j=0;j<(int)(keyboard[i].size());j++){
+			if(keyboard[i][j]!=' '){
+				if(bad[keyboard[i][j]-'A']==0) scta(back);
+				if(bad[keyboard[i][j]-'A']==1) scta(red);
+				if(bad[keyboard[i][j]-'A']==2) scta(yellow);
+				if(bad[keyboard[i][j]-'A']==3) scta(back);
+			}
+			cout<<keyboard[i][j];
+			scta(back);
+		}
+		cout<<endl;
+	}
+	cout<<(int)(words[wid].size())<<" letters."<<endl;
+	cout<<det<<endl;
+	hist[rounds+1].clear();
+	for(int i=1;i<=rounds;i++){
+		for(int j=0;j<hist[i].size();j++){
+			scta(hist[i][j].second);
+			cout<<hist[i][j].first;
+		}
+		cout<<endl;
+	}
+	scta(back);
+}
 void wordle(){
 	int id=rand()%(int)(words.size());
 	scta(back);
@@ -40,33 +69,7 @@ void wordle(){
 	while(1){
 		round++;
 		if(round==vals["TURNS"]+1){
-			system("cls");
-			scta(back);
-			printf("Try #%4d\n",vals["TURNS"]);
-			for(int i=0;i<3;i++){
-				for(int j=0;j<(int)(keyboard[i].size());j++){
-					if(keyboard[i][j]!=' '){
-						if(bad[keyboard[i][j]-'A']==0) scta(back);
-						if(bad[keyboard[i][j]-'A']==1) scta(red);
-						if(bad[keyboard[i][j]-'A']==2) scta(yellow);
-						if(bad[keyboard[i][j]-'A']==3) scta(back);
-					}
-					cout<<keyboard[i][j];
-					scta(back);
-				}
-				cout<<endl;
-			}
-			cout<<(int)(words[id].size())<<" letters."<<endl;
-			cout<<det<<endl;
-			hist[round].clear();
-			for(int i=1;i<round;i++){
-				for(int j=0;j<hist[i].size();j++){
-					scta(hist[i][j].second);
-					cout<<hist[i][j].first;
-				}
-				cout<<endl;
-			}
-			scta(back);
+			printstate(round-1,id,round-1);
 			scta(red);
 			cout<<"GAME OVER!"<<endl;
 			scta(green);
@@ -75,35 +78,19 @@ void wordle(){
 			system("pause");
 			return;
 		}
-		system("cls");
-		scta(back);
-		printf("Try #%4d\n",round);
-		for(int i=0;i<3;i++){
-			for(int j=0;j<(int)(keyboard[i].size());j++){
-				if(keyboard[i][j]!=' '){
-					if(bad[keyboard[i][j]-'A']==0) scta(back);
-					if(bad[keyboard[i][j]-'A']==1) scta(red);
-					if(bad[keyboard[i][j]-'A']==2) scta(yellow);
-					if(bad[keyboard[i][j]-'A']==3) scta(back);
-				}
-				cout<<keyboard[i][j];
-				scta(back);
-			}
-			cout<<endl;
-		}
-		cout<<(int)(words[id].size())<<" letters."<<endl;
-		cout<<det<<endl;
-		hist[round].clear();
-		for(int i=1;i<round;i++){
-			for(int j=0;j<hist[i].size();j++){
-				scta(hist[i][j].second);
-				cout<<hist[i][j].first;
-			}
-			cout<<endl;
-		}
-		scta(back);
+		printstate(round-1,id,round);
 		string ssss;
 		cin>>ssss;
+		if(ssss=="help!"){
+			printstate(round-1,id,round-1);
+			scta(red);
+			cout<<"YOU GAVE UP!"<<endl;
+			scta(green);
+			cout<<"ANSWER: "<<words[id]<<endl;
+			scta(back);
+			system("pause");
+			return;
+		}
 		bool flag=true;
     	for(int i=0;i<(int)(ssss.size());i++){
     		if(!isalpha(ssss[i])){
@@ -162,30 +149,7 @@ void wordle(){
     	for(int i=0;i<(int)(words[id].size());i++)
 			hist[round].push_back(make_pair(ssss[i]-'A'+'a',col[i]));
 		if(GR==(int)(words[id].size())){
-			system("cls");
-			printf("Try #%4d\n",round);
-			for(int i=0;i<3;i++){
-				for(int j=0;j<(int)(keyboard[i].size());j++){
-					if(keyboard[i][j]!=' '){
-						if(bad[keyboard[i][j]-'A']==0) scta(back);
-						if(bad[keyboard[i][j]-'A']==1) scta(red);
-						if(bad[keyboard[i][j]-'A']==2) scta(yellow);
-					}
-					cout<<keyboard[i][j];
-					scta(back);
-				}
-				cout<<endl;
-			}
-			cout<<(int)(words[id].size())<<" letters."<<endl;
-			cout<<words[id]<<endl;
-			for(int i=1;i<=round;i++){
-				for(int j=0;j<hist[i].size();j++){
-					scta(hist[i][j].second);
-					cout<<hist[i][j].first;
-				}
-				cout<<endl;
-			}
-			scta(back);
+			printstate(round,id,round);
 			printf("Guessed correctly after %d tries.\n",round);
 			scta(back);
 			system("pause");
@@ -219,6 +183,7 @@ void rules(){
 	cout<<"If the word is too long/short,it will be shown in "<<flush;
 	scta(purple);cout<<"purple"<<flush;scta(back);
 	cout<<"."<<endl;
+	cout<<"Type \"help!\" to see the answer."<<endl;
 	system("pause");
 }
 void readconf(){
