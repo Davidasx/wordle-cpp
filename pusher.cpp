@@ -17,7 +17,12 @@ int main(int argc,char** argv){
 		ver+=tmp[i];
 	}
 	system("taskkill /f /im wordle.exe");
-	system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
+	system("cls");
+	int rt=system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
+	if(rt){
+		cout<<"Failed to compile."<<endl;
+		return 0;
+	}
 	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
 	system("copy ..\\wordle.cpp wordle.cpp");
