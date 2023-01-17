@@ -16,11 +16,12 @@ int main(int argc,char** argv){
 		if(tmp[i]=='\"') break;
 		ver+=tmp[i];
 	}
+	system("taskkill /f /im wordle.exe");
+	system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
 	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
 	system("copy ..\\wordle.cpp wordle.cpp");
 	system("copy ..\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
-	system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
 	system("copy ..\\wordle.exe wordle.exe");
 	system("copy ..\\wordle.exe releases\\"+ver+"\\wordle.exe");
 	system("commiter");
