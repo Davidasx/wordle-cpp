@@ -33,6 +33,9 @@ int main(int argc,char** argv){
 	system("copy ..\\wordle.exe wordle.exe");
 	system("copy ..\\wordle.exe releases\\"+ver+"\\wordle.exe");
 	system("commiter");
+	system("gh release create "+ver+" --generate-notes");
+	system("gh release upload "+ver+" .\\wordle.cpp");
+	system("gh release upload "+ver+" .\\wordle.exe");
 	system("pause");
 	return 0;
 }
