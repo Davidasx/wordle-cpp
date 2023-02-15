@@ -19,12 +19,6 @@ int main(int argc,char** argv){
 	system("taskkill /f /im wordle.exe");
 	system("cls");
 	cout<<"Compiling.."<<endl;
-	int rt=system("g++ ..\\wordle.cpp -o ..\\wordle.exe");
-	if(rt){
-		cout<<"Failed to compile."<<endl;
-		system("pause");
-		return 0;
-	}
 	cout<<"Compiled."<<endl;
 	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
