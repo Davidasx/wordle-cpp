@@ -2,7 +2,7 @@
 #include<conio.h>
 #include<windows.h>
 using namespace std;
-string ver="2.7.0";
+string ver="2.6.0";
 string date="20230529";
 string config="\\wordle.conf";
 string user_root;
