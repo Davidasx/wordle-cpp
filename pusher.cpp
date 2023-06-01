@@ -18,18 +18,35 @@ int main(int argc,char** argv){
 	}
 	system("taskkill /f /im wordle.exe");
 	system("cls");
-	cout<<"Compiling.."<<endl;
-	cout<<"Compiled."<<endl;
+	ifstream ain("assets.txt");
+	string file,uver;
+	map<string,string> assets;
+	while(ain>>file>>uver){
+		if(system("fc ..\\"+file+" "+file)){
+			uver=ver;
+			system("copy ..\\"+file+" "+file);
+		}
+		assets[file]=uver;
+	}
+	ain.close();
+	ofstream aout("assets.txt");
+	for(pair<string,string> P:assets)
+		aout<<P.first<<" "<<P.second<<endl;
+	aout.close();
 	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
 	system("copy ..\\wordle.cpp wordle.cpp");
 	system("copy ..\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
 	system("copy ..\\wordle.exe wordle.exe");
 	system("copy ..\\wordle.exe releases\\"+ver+"\\wordle.exe");
+	for(pair<string,string> P:assets)
+		system("copy ..\\"+P.first+" releases\\"+ver+"\\"+P.first);
 	system("commiter");
 	system("gh release create "+ver+" --generate-notes");
 	system("gh release upload "+ver+" .\\wordle.cpp");
 	system("gh release upload "+ver+" .\\wordle.exe");
+	for(pair<string,string> P:assets)
+		system("gh release upload "+ver+" .\\"+P.first);
 	system("pause");
 	return 0;
 }
