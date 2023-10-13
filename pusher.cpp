@@ -6,11 +6,9 @@ unsigned int system(string s){
 int main(int argc,char** argv){
 	ifstream fin("..\\wordle.cpp");
 	string ver,tmp;
-	getline(fin,tmp);
-	getline(fin,tmp);
-	getline(fin,tmp);
-	getline(fin,tmp);
-	getline(fin,tmp);
+	while(getline(fin,tmp)){
+		if(tmp.substr(0,12)=="string ver=\"") break;
+	}
 	fin.close();
 	for(int i=12;i<(int)(tmp.size());i++){
 		if(tmp[i]=='\"') break;
