@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-int main(){
+int main(int argc,char** argv){
+	bool NP=false;
+	if(argc==2) NP=true;
 	string randlab="";
 	srand(unsigned(time(NULL)));
 	rand();
@@ -13,6 +15,7 @@ int main(){
 	system(("git commit -m \""+randlab+"\"").data());
 	system("git branch -M main");
 	system("git push -u origin main");
+	if(!NP) system("pause");
 	return 0;
 }
 
