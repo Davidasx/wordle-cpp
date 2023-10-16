@@ -7,7 +7,7 @@ int main(int argc,char** argv){
 	ifstream fin("..\\wordle\\wordle\\wordle.cpp");
 	string ver,tmp;
 	while(getline(fin,tmp)){
-		if(tmp.substr(0,12)=="string ver = \"") break;
+		if(tmp.substr(0,14)=="string ver = \"") break;
 	}
 	fin.close();
 	for(int i=12;i<(int)(tmp.size());i++){
