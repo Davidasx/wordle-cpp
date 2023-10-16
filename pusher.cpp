@@ -4,7 +4,7 @@ unsigned int system(string s){
 	return system(s.data());
 }
 int main(int argc,char** argv){
-	ifstream fin("..\\wordle.cpp");
+	ifstream fin("..\\wordle\\wordle\\wordle.cpp");
 	string ver,tmp;
 	while(getline(fin,tmp)){
 		if(tmp.substr(0,12)=="string ver=\"") break;
@@ -20,9 +20,9 @@ int main(int argc,char** argv){
 	string file,uver;
 	map<string,string> assets;
 	while(ain>>file>>uver){
-		if(system("fc ..\\"+file+" "+file)){
+		if(system("fc ..\\wordle\\x64\\Release\\"+file+" "+file)){
 			uver=ver;
-			system("copy ..\\"+file+" "+file);
+			system("copy ..\\wordle\\x64\\Release\\"+file+" "+file);
 		}
 		assets[file]=uver;
 	}
@@ -33,10 +33,10 @@ int main(int argc,char** argv){
 	aout.close();
 	system("echo "+ver+" > latest.txt");
 	system("mkdir releases\\"+ver);
-	system("copy ..\\wordle.cpp wordle.cpp");
-	system("copy ..\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
-	system("copy ..\\wordle.exe wordle.exe");
-	system("copy ..\\wordle.exe releases\\"+ver+"\\wordle.exe");
+	system("copy ..\\wordle\\wordle\\wordle.cpp wordle.cpp");
+	system("copy ..\\wordle\\wordle\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
+	system("copy ..\\wordle\\x64\\Release\\wordle.exe wordle.exe");
+	system("copy ..\\wordle\\x64\\Release\\wordle.exe releases\\"+ver+"\\wordle.exe");
 	for(pair<string,string> P:assets)
 		system("copy ..\\"+P.first+" releases\\"+ver+"\\"+P.first);
 	system("commiter --no-pause");
