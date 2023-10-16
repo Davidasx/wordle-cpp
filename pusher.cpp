@@ -10,7 +10,7 @@ int main(int argc,char** argv){
 		if(tmp.substr(0,14)=="string ver = \"") break;
 	}
 	fin.close();
-	for(int i=12;i<(int)(tmp.size());i++){
+	for(int i=14;i<(int)(tmp.size());i++){
 		if(tmp[i]=='\"') break;
 		ver+=tmp[i];
 	}
