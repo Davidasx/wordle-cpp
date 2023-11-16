@@ -1,1 +1,1 @@
-ECHO is on.
+ECHO 处于打开状态。
