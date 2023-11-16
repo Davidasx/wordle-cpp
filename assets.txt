@@ -1,2 +1,1 @@
 answers.txt 
-dictionary.txt 
