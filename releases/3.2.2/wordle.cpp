@@ -289,10 +289,11 @@ void wordle(){
 			return;
 		}
 		printstate(hists-1,id,round);
-		string ssss=readstring(true);
-		if(ssss==""){
-			hists--;round--;
-			continue;
+		string ssss;
+		while(1){
+			ssss=readstring(true);
+			if(ssss!="") break;
+			cursory-=20;
 		}
 		if(ssss=="help!"){
 			printstate(hists-1,id,round-1);
