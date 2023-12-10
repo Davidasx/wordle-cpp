@@ -290,6 +290,10 @@ void wordle(){
 		}
 		printstate(hists-1,id,round);
 		string ssss=readstring(true);
+		if(ssss==""){
+			hists--;round--;
+			continue;
+		}
 		if(ssss=="help!"){
 			printstate(hists-1,id,round-1);
 			scta(red);
