@@ -446,7 +446,7 @@ void rating(){
 	clr(1000);putstring("1000");scta(text);putstring(" to ");
 	clr(1299);putstring("1299");scta(text);putstring(" : ");
 	clr(1299);putstring("expert");changeline();scta(text);
-	clr(1290);putstring("1290");scta(text);putstring(" to ");
+	clr(1300);putstring("1300");scta(text);putstring(" to ");
 	clr(1699);putstring("1699");scta(text);putstring(" : ");
 	clr(1699);putstring("master");changeline();scta(text);
 	clr(1700);putstring("1700");scta(text);putstring(" to ");
