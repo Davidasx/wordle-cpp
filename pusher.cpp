@@ -38,7 +38,7 @@ int main(int argc,char** argv){
 	system("copy ..\\wordle\\x64\\Release\\wordle.exe wordle.exe");
 	system("copy ..\\wordle\\x64\\Release\\wordle.exe releases\\"+ver+"\\wordle.exe");
 	for(pair<string,string> P:assets)
-		system("copy ..\\wordle\\"+P.first+" releases\\"+ver+"\\"+P.first);
+		system("copy ..\\wordle\\wordle\\"+P.first+" releases\\"+ver+"\\"+P.first);
 	system("commiter --no-pause");
 	system("gh release create "+ver+" --generate-notes");
 	system("gh release upload "+ver+" .\\wordle.cpp");
