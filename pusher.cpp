@@ -4,7 +4,7 @@ unsigned int system(string s){
 	return system(s.data());
 }
 int main(int argc,char** argv){
-	ifstream fin("..\\wordle\\wordle\\wordle.cpp");
+	ifstream fin("..\\wordle\\wordle.cpp");
 	string ver,tmp;
 	while(getline(fin,tmp)){
 		if(tmp.substr(0,12)=="string ver=\"") break;
