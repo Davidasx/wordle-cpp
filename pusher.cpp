@@ -21,9 +21,9 @@ int main(int argc,char** argv){
 	string file,uver;
 	map<string,string> assets;
 	while(ain>>file>>uver){
-		if(system("fc ..\\wordle\\wordle\\"+file+" "+file)){
+		if(system("fc ..\\wordle\\"+file+" "+file)){
 			uver=ver;
-			system("copy ..\\wordle\\wordle\\"+file+" "+file);
+			system("copy ..\\wordle\\"+file+" "+file);
 		}
 		assets[file]=uver;
 	}
