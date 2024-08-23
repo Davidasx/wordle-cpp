@@ -17,7 +17,7 @@ int main(int argc,char** argv){
 	system("taskkill /f /im wordle.exe");
 	system("cls");
 	system("msbuild ..\\wordle\\wordle.sln -p:Configuration=Release");
-	system("copy ..\\wordle\\x64\\Release\\wordle.exe wordle.exe /Y");
+	system("copy ..\\wordle\\x64\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
 	ifstream ain("assets.txt");
 	string file,uver;
 	map<string,string> assets;
