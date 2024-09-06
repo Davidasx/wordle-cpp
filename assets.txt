@@ -1,2 +1,1 @@
-answers.txt 3.3.0
-dictionary.txt 3.3.0
+answers.txt dictionary.txt
