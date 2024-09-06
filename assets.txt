@@ -1,1 +1,2 @@
-answers.txt 3.3.12
+answers.txt 3.3.0
+dictionary.txt 3.3.0
