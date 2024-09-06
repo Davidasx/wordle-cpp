@@ -34,13 +34,8 @@ int main(int argc,char** argv){
 		aout<<P.first<<" "<<P.second<<endl;
 	aout.close();
 	system("echo "+ver+" > latest.txt");
-	system("mkdir releases\\"+ver);
-	system("copy ..\\wordle\\wordle.cpp wordle.cpp");
-	system("copy ..\\wordle\\wordle.cpp releases\\"+ver+"\\wordle.cpp");
+	system("copy ..\\wordle\\wordle\\wordle.cpp wordle.cpp");
 	system("copy ..\\wordle\\x64\\Release\\wordle.exe wordle.exe");
-	system("copy ..\\wordle\\x64\\Release\\wordle.exe releases\\"+ver+"\\wordle.exe");
-	for(pair<string,string> P:assets)
-		system("copy ..\\wordle\\"+P.first+" releases\\"+ver+"\\"+P.first);
 	system("commiter --no-pause");
 	system("gh release create "+ver+" --generate-notes");
 	system("gh release upload "+ver+" .\\wordle.cpp");
