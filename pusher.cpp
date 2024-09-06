@@ -7,18 +7,17 @@ int main(int argc,char** argv){
 	ifstream fin("..\\wordle\\wordle.cpp");
 	string ver,tmp;
 	while(getline(fin,tmp)){
-		if(tmp.substr(0,14)=="string ver = \"") break;
+		if(tmp.substr(0,12)=="string ver=\"") break;
 	}
 	fin.close();
-	for(int i=14;i<(int)(tmp.size());i++){
+	for(int i=12;i<(int)(tmp.size());i++){
 		if(tmp[i]=='\"') break;
 		ver+=tmp[i];
 	}
 	system("taskkill /f /im wordle.exe");
 	system("cls");
-	system("copy ..\\wordle\\wordle.cpp ..\\wordle\\wordle\\wordle.cpp");
-	system("msbuild ..\\wordle\\wordle.sln -p:Configuration=Release");
-	system("copy ..\\wordle\\x64\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
+	system("msbuild ..\\wordle\\wordle.vcxproj -p:Configuration=Release");
+	system("copy ..\\wordle\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
 	ifstream ain("assets.txt");
 	string file,uver;
 	map<string,string> assets;
