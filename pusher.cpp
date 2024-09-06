@@ -4,7 +4,7 @@ unsigned int system(string s){
 	return system(s.data());
 }
 int main(int argc,char** argv){
-	ifstream fin("..\\wordle\\wordle\\wordle.cpp");
+	ifstream fin("..\\wordle\\wordle.cpp");
 	string ver,tmp;
 	while(getline(fin,tmp)){
 		if(tmp.substr(0,14)=="string ver = \"") break;
@@ -16,9 +16,9 @@ int main(int argc,char** argv){
 	}
 	system("taskkill /f /im wordle.exe");
 	system("cls");
+	system("copy ..\\wordle\\wordle.cpp ..\\wordle\\wordle\\wordle.cpp");
 	system("msbuild ..\\wordle\\wordle.sln -p:Configuration=Release");
 	system("copy ..\\wordle\\x64\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
-	system("copy ..\\wordle\\wordle\\wordle.cpp ..\\wordle\\wordle.cpp");
 	ifstream ain("assets.txt");
 	string file,uver;
 	map<string,string> assets;
