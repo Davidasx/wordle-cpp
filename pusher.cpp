@@ -34,8 +34,8 @@ int main(int argc,char** argv){
 		aout<<P.first<<" "<<P.second<<endl;
 	aout.close();
 	system("echo "+ver+" > latest.txt");
-	system("copy ..\\wordle\\wordle\\wordle.cpp wordle.cpp");
-	system("copy ..\\wordle\\x64\\Release\\wordle.exe wordle.exe");
+	system("copy ..\\wordle\\wordle.cpp wordle.cpp");
+	system("copy ..\\wordle\\Release\\wordle.exe wordle.exe");
 	system("commiter --no-pause");
 	system("gh release create "+ver+" --generate-notes");
 	system("gh release upload "+ver+" .\\wordle.cpp");
