@@ -17,7 +17,7 @@ int main(int argc,char** argv){
 	system("taskkill /f /im wordle.exe");
 	system("cls");
 	system("msbuild ..\\wordle\\wordle.vcxproj -p:Configuration=Release");
-	system("copy ..\\wordle\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
+	system("copy ..\\wordle\\x64\\Release\\wordle.exe ..\\wordle\\wordle.exe /Y");
 	ifstream ain("assets.txt");
 	string file,uver;
 	map<string,string> assets;
@@ -35,7 +35,7 @@ int main(int argc,char** argv){
 	aout.close();
 	system("echo "+ver+" > latest.txt");
 	system("copy ..\\wordle\\wordle.cpp wordle.cpp");
-	system("copy ..\\wordle\\Release\\wordle.exe wordle.exe");
+	system("copy ..\\wordle\\wordle.exe wordle.exe");
 	system("commiter --no-pause");
 	system("gh release create "+ver+" --generate-notes");
 	system("gh release upload "+ver+" .\\wordle.cpp");

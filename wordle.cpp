@@ -8,7 +8,7 @@
 #include<windows.h>
 #include<graphics.h>
 using namespace std;
-string ver="3.3.13";
+string ver="3.3.14";
 string date="20240907";
 string config="\\wordle.conf";
 vector<string> keyboard={ "Q W E R T Y U I O P",
@@ -895,7 +895,7 @@ void settings(){
 	return;
 }
 int download_file(string pth,string out){
-	string url="http://gitdl.cn/https://raw.githubusercontent.com/Davidasx/wordle-cpp/main/"+pth;
+	string url="https://cdn.jsdelivr.net/gh/Davidasx/wordle-cpp/"+pth;
 	return system("curl \""+url+"\" --silent -o "+out);
 }
 int download_release(string rls,string fil,string out){
@@ -904,7 +904,7 @@ int download_release(string rls,string fil,string out){
 	putstring("\\");
 	putstring(fil);
 	changeline();
-	string url="http://gh.api.99988866.xyz/https://github.com/Davidasx/wordle-cpp/releases/download/"+rls+"/"+fil;
+	string url="https://github.com/Davidasx/wordle-cpp/releases/download/latest/"+fil;
 	return system("curl \""+url+"\" -o "+out);
 }
 bool later(string a,string b){
