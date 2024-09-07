@@ -8,14 +8,14 @@
 #include<windows.h>
 #include<graphics.h>
 using namespace std;
-string ver="3.3.14";
+string ver="3.3.15";
 string date="20240907";
 string config="\\wordle.conf";
 vector<string> keyboard={ "Q W E R T Y U I O P",
 						 " A S D F G H J K L",
 						 "  Z X C V B N M" };
 string user_root;
-string progname,cppname;
+string progname="wordle.exe",cppname="wordle.cpp";
 bool havecpp;
 vector<string> answers;
 vector<string> words;
@@ -734,12 +734,15 @@ map<string,vector<pair<string,string> > > item_s;
 void prep_settings(){
 	desc["UPDATE_INTERVAL"]="Update interval";
 	item_i["UPDATE_INTERVAL"].push_back({ "1 day",86400 });
-	item_i["UPDATE_INTERVAL"].push_back({ "1 week",604800 });
-	item_i["UPDATE_INTERVAL"].push_back({ "10 days",864000 });
-	item_i["UPDATE_INTERVAL"].push_back({ "30 days",2592000 });
-	item_i["UPDATE_INTERVAL"].push_back({ "180 days",15552000 });
-	item_i["UPDATE_INTERVAL"].push_back({ "365 days",31536000 });
-	item_i["UPDATE_INTERVAL"].push_back({ "never",2e9 });
+	item_i["UPDATE_INTERVAL"].push_back({ "1 week",604800});
+	item_i["UPDATE_INTERVAL"].push_back({ "10 days",864000});
+	item_i["UPDATE_INTERVAL"].push_back({ "30 days",2592000});
+	item_i["UPDATE_INTERVAL"].push_back({ "180 days",15552000});
+	item_i["UPDATE_INTERVAL"].push_back({ "365 days",31536000});
+	item_i["UPDATE_INTERVAL"].push_back({ "never",2e9});
+	desc["DOWNLOAD_HEAD"]="Download mode";
+	item_s["DOWNLOAD_HEAD"].push_back({ "Standard",""});
+	item_s["DOWNLOAD_HEAD"].push_back({ "Mirror","https://gitdl.cn/"});
 	return;
 }
 void editi(string name){
@@ -895,7 +898,9 @@ void settings(){
 	return;
 }
 int download_file(string pth,string out){
-	string url="https://cdn.jsdelivr.net/gh/Davidasx/wordle-cpp/"+pth;
+	string url="https://github.com/Davidasx/wordle-cpp/raw/main/"+pth;
+	if(strv["DOWNLOAD_HEAD"]!="")
+		url="https://cdn.jsdelivr.net/gh/Davidasx/wordle-cpp/"+pth;
 	return system("curl \""+url+"\" --silent -o "+out);
 }
 int download_release(string rls,string fil,string out){
@@ -904,8 +909,8 @@ int download_release(string rls,string fil,string out){
 	putstring("\\");
 	putstring(fil);
 	changeline();
-	string url="https://github.com/Davidasx/wordle-cpp/releases/download/latest/"+fil;
-	return system("curl \""+url+"\" -o "+out);
+	string url=strv["DOWNLOAD_HEAD"]+"https://github.com/Davidasx/wordle-cpp/releases/download/"+rls+"/"+fil;
+	return system("curl \""+url+"\" --silent -o "+out);
 }
 bool later(string a,string b){
 	int cur=0;
@@ -944,8 +949,14 @@ void update(){
 	putstring("Current Version:");putstring(ver);
 	changeline();
 	int ret=download_file("latest.txt","wdlatest.txt");
+	if(ret){
+		putstring("Failed to check latest version.");
+		changeline();
+		pause();
+		return;
+	}
 	int ret2=download_file("assets.txt","wdassets.txt");
-	if(ret||ret2){
+	if(ret2){
 		putstring("Failed to check latest version.");
 		changeline();
 		pause();
@@ -1027,13 +1038,14 @@ void update(){
 					}
 				}
 				writeconf();
+				pause();
 				ofstream fout("wdupdater.bat");
 				fout<<"@echo off"<<endl;
 				fout<<"pause"<<endl;
 				fout<<"copy wordle_new_update.exe "<<progname<<endl;
 				if(havecpp)
 					fout<<"copy wordle_new_update.cpp "<<cppname<<endl;
-				fout<<"del wordle_new_update.exe"<<endl;
+				//fout<<"del wordle_new_update.exe"<<endl;
 				if(havecpp)
 					fout<<"del wordle_new_update.cpp"<<endl;
 				for(pair<string,string> P:assets){
@@ -1106,16 +1118,7 @@ int main(int argc,char** argv){
 		test_update.close();
 		system("del wdupdater.bat");
 	}
-	progname=argv[0];
-	string tmpname="";
-	for(int i=(int)(progname.size())-1;i>=0;i--){
-		if(progname[i]=='\\') break;
-		tmpname+=progname[i];
-	}
-	reverse(tmpname.begin(),tmpname.end());
-	progname=tmpname;
-	cppname=progname.substr(0,progname.size()-3)+"cpp";
-	ifstream cpptest(cppname.data());
+	ifstream cpptest("wordle.cpp");
 	if(!cpptest) havecpp=false;
 	else havecpp=true;
 	cpptest.close();
@@ -1143,6 +1146,7 @@ int main(int argc,char** argv){
 	}
 	else tmpconf.close();
 	readconf();
+	if(strv["DOWNLOAD_HEAD"]=="") strv["DOWNLOAD_HEAD"]="";
 	if(!vals["LAST_UPDATE"]) vals["LAST_UPDATE"]=time(0);
 	if(!vals["UPDATE_INTERVAL"]) vals["UPDATE_INTERVAL"]=604800;
 	if(!vals["TURNS"]) vals["TURNS"]=20;
