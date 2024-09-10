@@ -1,3 +1,5 @@
+# This repo is deprecated. Upgrades of Wordle before 3.3.16 is unavailable now.
+# Please use [New Version](https://github.com/Davidasx/wordle-cpp-new)
 # wordle-cpp
 A C++ game,similar to wordle.
 
